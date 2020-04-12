@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const config = require('config')
 const { check, validationResult } = require('express-validator/check');
 //The require('express-validator/check') also works
 
@@ -39,10 +41,25 @@ router.post('/',[
                     email,
                     password
                 });
-                const salt = await bcrypt.genSalt(10);
+                const salt = await bcrypt.genSalt(10); // arbitary value
                 user.password = await bcrypt.hash(password,salt);
                 await user.save();   
-                res.send('User Saved');         
+                //res.send('User Saved');
+                const payload = {
+                    user: {
+                        id : user.id
+                    }
+                };    
+                jwt.sign(payload, config.get("jwtSecret"), {
+                    expiresIn: 1800
+                }, (err, token)=>{
+                    if(err){
+                        throw err;
+                    }else {
+                        res.json({token});
+                    }
+                });
+                
             }
             catch (err){
                 return res.status(500).json({err: err.messages});
