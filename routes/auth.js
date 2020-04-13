@@ -5,12 +5,20 @@ const bcrypt = require('bcryptjs');
 const config = require('config');
 const {check, validationResult} = require('express-validator/check');
 const User = require('../models/Users');
+const auth = require('../middleWare/auth');
 
 // @route       GET api/auth
 // @desc        Get the logged in user
 // @access      Private
-router.get('/', (req, res) => {
-    res.send('Get the loggged in users');
+router.get('/', auth, async (req, res) => {
+    try {     
+        const user = await User.findById(req.user.id).select('-password');
+        res.json(user);       
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error');
+    }
+    //res.send('Get the loggged in users');
 });
 
 // @route       POST api/auth
