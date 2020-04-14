@@ -65,15 +65,67 @@ router.post(
 // @route       PuT api/contacts/:id
 // @desc        Update a contact
 // @access      Private     
-router.put('/:id', (req, res) => {
-    res.send('Update a contact');
+router.put('/:id', auth, async (req, res) => {
+    const {name, email, phone, type} = req.body;
+
+    const contactFields = {};
+    if(name) contactFields.name = name;
+    if(email) contactFields.email = email;
+    if(phone) contactFields.phone = phone;
+    if(type) contactFields.type = type;
+
+    try {
+        let contact = await Contact.findById(req.params.id);
+        if(!contact) {
+            return res.status(404).json({msg: "Contact not found"});
+        }
+
+        //Make sure user owns the contact??? why contact.user is an id???
+        //console.log(contact.user.toString());
+        if(contact.user.toString() !== req.user.id){
+            return res.status(401).json({msg: "Not authorized"});
+        }
+
+       // console.log(req.params.id);
+        contact = await Contact.findByIdAndUpdate(
+            req.params.id, 
+            { $set: contactFields },
+            { new: true }
+            );
+        res.json(contact);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({msg: "Server Error"});
+    }
+
+    //res.send('Update a contact');
 });
 
 // @route       Delete api/contacts/:id
 // @desc        Delete a contact
 // @access      Private     
-router.delete('/:id', (req, res) => {
-    res.send('Delete a contact');
+router.delete('/:id', auth, async (req, res) => {
+
+    try {
+        let contact = await Contact.findById(req.params.id);
+        if(!contact) {
+            return res.status(404).json({msg: "Contact not found"});
+        }
+
+        //Make sure user owns the contact??? why contact.user is an id???
+        //console.log(contact.user.toString());
+        if(contact.user.toString() !== req.user.id){
+            return res.status(401).json({msg: "Not authorized"});
+        }
+
+       // console.log(req.params.id);
+        await Contact.findByIdAndRemove(req.params.id);
+        res.json({msg: "delete the contact"});
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({msg: "Server Error"});
+    }
+    //res.send('Delete a contact');
 });
 
 
