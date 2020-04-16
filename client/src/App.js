@@ -6,7 +6,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import About from './component/pages/About';
 import Home from './component/pages/Home';
 
-import ContactState from './context/ContactState';
+import ContactState from './context/contact/ContactState';
 export const App = () => {
   return (
     <ContactState>
@@ -23,3 +23,4 @@ export const App = () => {
 }
 
 export default App;
+
