@@ -1,11 +1,15 @@
 import React from 'react'
+import Contact from '../contact/Contact';
 
 export const Home = () => {
     return (
-        <div>
-            <h3>Home Page</h3>
+        <div className='grid-2'>            
+            <div>{/* Contact Form */}</div>
+            <div>
+                <Contact/>
+            </div>
         </div>
-    )
+    );
 }
 
 export default Home;

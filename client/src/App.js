@@ -12,7 +12,6 @@ export const App = () => {
     <ContactState>
       <Router>
         <Navbar/>
-        <div className="App">My App</div>
         <Switch>          
             <Route exact path='/' component={Home}></Route>
             <Route exact path='/about' component={About}></Route>          
