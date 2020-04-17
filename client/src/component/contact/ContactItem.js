@@ -11,10 +11,10 @@ export const ContactItem = ({contact}) => {
             </h3>
             <ul>
                 <li>
-                     <i className='fas fa-envelope'/>{email}
+                     <i className='fa fa-envelope'/>{email}
                 </li>
                 <li>
-                    <i className='fas fa-phone'>{phone}</i>
+                    <i className='fa fa-phone'>{phone}</i>
                 </li>               
             </ul>
             <p>
