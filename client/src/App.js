@@ -7,23 +7,28 @@ import About from './component/pages/About';
 import Home from './component/pages/Home';
 import Login from './component/auth/Login';
 import Register from './component/auth/Register';
+import Alert from './component/layout/Alert';
 
 import ContactState from './context/contact/ContactState';
 import AuthState from './context/contact/ContactState';
+import AlertState from './context/alert/AlertState';
 
 export const App = () => {
   return (
     <AuthState>
       <ContactState>
-        <Router>
-          <Navbar/>
-          <Switch>          
-              <Route exact path='/' component={Home}></Route>
-              <Route exact path='/about' component={About}></Route>
-              <Route exact path='/login' component={Login}></Route>
-              <Route exact path='/register' component={Register}></Route>        
-          </Switch>
-        </Router> 
+        <AlertState>
+          <Router>
+            <Alert></Alert>
+            <Navbar/>
+            <Switch>          
+                <Route exact path='/' component={Home}></Route>
+                <Route exact path='/about' component={About}></Route>
+                <Route exact path='/login' component={Login}></Route>
+                <Route exact path='/register' component={Register}></Route>        
+            </Switch>
+          </Router> 
+        </AlertState>
       </ContactState> 
     </AuthState>
 
