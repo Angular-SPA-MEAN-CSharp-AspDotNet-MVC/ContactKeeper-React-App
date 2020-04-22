@@ -10,7 +10,7 @@ import Register from './component/auth/Register';
 import Alert from './component/layout/Alert';
 
 import ContactState from './context/contact/ContactState';
-import AuthState from './context/contact/ContactState';
+import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
 
 export const App = () => {

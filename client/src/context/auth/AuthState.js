@@ -1,6 +1,7 @@
 import React, {useReducer} from 'react';
-import authReducer from './authReducer';
 import AuthContext from './authContext';
+import authReducer from './authReducer';
+import axios from 'axios';
 
 import {
     REGISTER_SUCCESS,
@@ -22,29 +23,70 @@ const AuthState = props => {
         error: null
     };
 
-    const [state, dispatch] = useReducer(authReducer, intialState);
+    const [state, dispatch] = useReducer(authReducer, initialState);
 
-   
     //Load User
+    const loadUser = () => {
+        console.log('load user')
+    }
 
     //Register User
+    const register = async formData => {
+        const config = {
+            headers: {
+                        'Context-Type': 'application/json'
+                    }
+        };
+        try {
+            const res = await axios.post('/api/users', formData, config);
+            dispatch({
+                type: REGISTER_SUCCESS,
+                payload: res.data
+            });
+
+        } catch (err) {
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: err.response.data.msg
+            });
+        }
+    }
 
     //Login User
+    const login = () => {
+        console.log('login');
+    }
 
     //Logout
-
+    const logout = () => {
+        console.log('logout');
+    }
     //Clear Error
-
+    const clearErrors = () => {
+        dispatch({
+            type: CLEAR_ERRORS
+        });
+        console.log('clearErrors');
+    }
 
     return (
-        <AuthContext.Proider
+        <AuthContext.Provider
             value={{
-
+                token: state.token,
+                isAuthenticated: state.isAuthenticated,
+                loading: state.loading,
+                user: state.user,
+                error: state.error,
+                loadUser,
+                register,
+                login,
+                logout,
+                clearErrors
             }}        
         >
             {props.children}
-        </AuthContext.Proider>
+        </AuthContext.Provider>
     );
-}
+};
 
 export default AuthState;

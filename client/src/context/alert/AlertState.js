@@ -9,13 +9,13 @@ import {
 } from '../../types';
 
 const AlertState = props => {
-    //const alertReducer = useReducer(AlertReducer);
+    // const alertReducer = useReducer(AlertReducer); 
     const initialState = [];
-        // useState({
-        //   alerts: [],
-        //   alert : '',
-        //   type: null
-        // });
+        useState({
+          alerts: [],
+          alert : '',
+          type: null
+        });
     const [state, dispatch] = useReducer(alertReducer, initialState)
   
     //SET_ALERT
@@ -46,6 +46,6 @@ const AlertState = props => {
             {props.children}
         </AlertContext.Provider>
     );
-}
+};
 
 export default AlertState;
