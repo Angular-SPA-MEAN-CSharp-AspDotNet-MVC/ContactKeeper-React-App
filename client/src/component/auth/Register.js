@@ -3,7 +3,7 @@ import AlertContext from '../../context/alert/alertContext';
 import AuthContext from '../../context/auth/authContext';
 import { CLEAR_ERRORS } from '../../types';
 
-export const Register = () => {
+export const Register = props => {
     const alertContext =  useContext(AlertContext);
     const authContext  =  useContext(AuthContext);
     const [user, setUser] = useState({
@@ -14,15 +14,20 @@ export const Register = () => {
     });
     const {name, email, password, password2} = user;
     const { alerts, setAlert } = alertContext;
-    const { loadUser, register, error, clearErrors } = authContext;
+    const { loadUser, register, error, clearErrors, isAuthenticated } = authContext;
 
     useEffect ( () => {
+        if(isAuthenticated) {
+            props.history.push('/');
+        }
+
         // professional way is to check the 'error.id'
         if (error === "The user exists.") {
             setAlert(error, 'danger');
             clearErrors();
         }
-    }, [error]);
+        //eslint-disable-next-line
+    }, [error, isAuthenticated, props.history]);
 
     const onChange = (e) => {
         setUser({...user, [e.target.name] : e.target.value});
